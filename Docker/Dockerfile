@@ -1,4 +1,4 @@
-FROM ubuntu:18.10 as builder
+FROM ubuntu:18.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONIOENCODING=utf-8
@@ -8,57 +8,11 @@ ENV LANG=C.UTF-8
 RUN apt-get update
 RUN apt-get install -y apt-utils
 RUN apt-get update
-RUN apt-get install -y cmake cmake-qt-gui curl unzip libopencv-dev lv libboost-thread-dev libatlas-base-dev
-RUN apt-get install -y libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler
-RUN apt-get install -y --no-install-recommends libboost-all-dev
-RUN apt-get install -y libgflags-dev libgoogle-glog-dev liblmdb-dev
+RUN apt-get install -y curl unzip lv
 RUN apt-get install -y python3-pip
 RUN apt-get install -y git
 RUN apt-get install -y wget
-
-# Caffe & OpenPose
-RUN git clone  --depth 1 https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
-RUN mkdir /openpose/build
-RUN apt-get install -y libmkl-dev
-RUN apt-get install -y libcaffe-cpu-dev
-RUN curl --create-dirs -L -o /openpose/models/pose/coco/pose_iter_440000.caffemodel http://posefs1.perception.cs.cmu.edu/OpenPose/models/pose/coco/pose_iter_440000.caffemodel
-RUN curl --create-dirs -L -o /openpose/models/pose/mpi/pose_iter_160000.caffemodel http://posefs1.perception.cs.cmu.edu/OpenPose/models/pose/mpi/pose_iter_160000.caffemodel
-RUN curl --create-dirs -L -o /openpose/models/face/pose_iter_116000.caffemodel http://posefs1.perception.cs.cmu.edu/OpenPose/models/face/pose_iter_116000.caffemodel
-RUN curl --create-dirs -L -o /openpose/models/hand/pose_iter_102000.caffemodel http://posefs1.perception.cs.cmu.edu/OpenPose/models/hand/pose_iter_102000.caffemodel
-RUN cd /openpose && sed -ibak -e 's|${MKL_PATH}/include/|/usr/include/mkl/|' CMakeLists.txt
-COPY mkldnn_inner_product_layer.cpp.patch /tmp/
-RUN cd /openpose/build \
- && cmake -DGPU_MODE=CPU_ONLY .. \
- && cd /openpose/3rdparty/caffe \
- && patch -p1 < /tmp/mkldnn_inner_product_layer.cpp.patch \
- && cd /openpose/build \
- && make -j $(nproc)
-RUN ldconfig
-
-
-# runtime image
-FROM ubuntu:18.10
-
-ENV DEBIAN_FRONTEND=noninteractive
-ENV PYTHONIOENCODING=utf-8
-ENV LANG=C.UTF-8
-
-COPY --from=builder /openpose /openpose
-RUN apt-get update
-RUN apt-get install -y apt-utils
-RUN apt-get update
-RUN apt-get install -y libgflags2.2
-RUN apt-get install -y libcaffe-cpu1
-RUN apt-get install -y libopencv-core3.2
-RUN apt-get install -y libopencv-objdetect3.2
-RUN apt-get install -y libopencv-video3.2
-RUN apt-get install -y libopencv-calib3d3.2
-RUN apt-get install -y libboost-regex1.67.0
-RUN apt-get install -y libboost-filesystem1.67.0
-RUN apt-get install -y python3-pip
-RUN apt-get install -y curl unzip
-RUN apt-get install -y libsm6 libgl1
-
+RUN apt-get install -y libsm6 libgl1 libxrender1
 
 # FCRN-DepthPrediction-vmd
 RUN pip3 install python-dateutil
@@ -104,5 +58,17 @@ RUN curl -L http://visual.cs.ucl.ac.uk/pubs/liftingFromTheDeep/res/init_session.
  | tar -zxvC /VMD-3d-pose-baseline-multi/data/saved_sessions 
 RUN curl -L http://visual.cs.ucl.ac.uk/pubs/liftingFromTheDeep/res/prob_model.tar.gz \
  | tar -zxvC /VMD-3d-pose-baseline-multi/data/saved_sessions 
+
+# tf-pose-estimation
+RUN pip3 install Cython
+RUN apt-get install -y swig
+RUN curl -L https://github.com/errno-mmd/tf-pose-estimation/archive/develop.tar.gz \
+ | tar -zxv \
+ && mv tf-pose-estimation-develop tf-pose-estimation
+RUN cd tf-pose-estimation \
+ && pip3 install -r requirements.txt \
+ && cd tf_pose/pafprocess \
+ && swig -python -c++ pafprocess.i \
+ && python3 setup.py build_ext --inplace
 
 CMD ["bash"]

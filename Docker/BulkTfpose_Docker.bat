@@ -1,11 +1,11 @@
 @echo off
 rem --- 
-rem ---  映像データからOpenposeで姿勢推定する
+rem ---  映像データからtf-pose-estimationで姿勢推定する
 rem --- 
 
 
 echo ------------------------------------------
-echo Openpose 解析
+echo tf-pose-estimation 解析
 echo ------------------------------------------
 
 rem ---  入力対象映像ファイルパス
@@ -52,8 +52,8 @@ set /P FRAME_END="■解析終了フレームNo: "
 rem ---  反転指定リスト
 echo --------------
 set REVERSE_SPECIFIC_LIST=
-echo Openposeが誤認識して反転しているフレーム番号(0始まり)、人物INDEX順番、反転の内容を指定してください。
-echo Openposeが0F目で認識した順番に0, 1, とINDEXが割り当てられます。
+echo tf-pose-estimationが誤認識して反転しているフレーム番号(0始まり)、人物INDEX順番、反転の内容を指定してください。
+echo tf-pose-estimationが0F目で認識した順番に0, 1, とINDEXが割り当てられます。
 echo フォーマット：［＜フレーム番号＞:反転を指定したい人物INDEX,＜反転内容＞］
 echo ＜反転内容＞: R: 全身反転, U: 上半身反転, L: 下半身反転, N: 反転なし
 echo 例）[10:1,R]　…　10F目の1番目の人物を全身反転します。
@@ -127,7 +127,7 @@ set OUTPUT_VIDEO_PATH=%INPUT_VIDEO_DIR%%INPUT_VIDEO_FILENAME%_%DTTM%\%INPUT_VIDE
 echo 解析結果aviファイル：%OUTPUT_VIDEO_PATH%
 
 echo --------------
-echo Openpose解析を開始します。
+echo tf-pose-estimation解析を開始します。
 echo 解析を中断したい場合、ESCキーを押下して下さい。
 echo --------------
 
@@ -135,11 +135,11 @@ rem -- exe実行
 set C_INPUT_VIDEO=/data/%INPUT_VIDEO_FILENAME_EXT%
 set C_JSON_DIR=/data/%INPUT_VIDEO_FILENAME%_%DTTM%/%INPUT_VIDEO_FILENAME%_json
 set C_OUTPUT_VIDEO=/data/%INPUT_VIDEO_FILENAME%_%DTTM%/%INPUT_VIDEO_FILENAME%_openpose.avi
-set OPENPOSE_ARG=--video %C_INPUT_VIDEO% --model_pose COCO --write_json %C_JSON_DIR% --write_video %C_OUTPUT_VIDEO% --number_people_max %NUMBER_PEOPLE_MAX% --frame_first %FRAME_FIRST% --display 0
-docker container run --rm -v %INPUT_VIDEO_DIR:\=/%:/data -it errnommd/autotracevmd:%IMAGE_TAG% bash -c "cd /openpose && ./build/examples/openpose/openpose.bin %OPENPOSE_ARG%"
+set TFPOSE_ARG=--video %C_INPUT_VIDEO% --model mobilenet_v2_large --write_json %C_JSON_DIR% --write_video %C_OUTPUT_VIDEO% --number_people_max %NUMBER_PEOPLE_MAX% --frame_first %FRAME_FIRST% --no_display
+docker container run --rm -v %INPUT_VIDEO_DIR:\=/%:/data -it errnommd/autotracevmd:%IMAGE_TAG% bash -c "cd /tf-pose-estimation && python3 run_video.py %TFPOSE_ARG%"
 
 echo --------------
 echo Done!!
-echo Openpose解析終了
+echo tf-pose-estimation解析終了
 
 exit /b

@@ -6,7 +6,7 @@ rem ---
 cls
 
 rem docker image tag
-set IMAGE_TAG=1.02-1
+set IMAGE_TAG=1.02.01-2
 
 rem ---  入力対象パラメーターファイルパス
 echo 解析対象となるパラメーター設定リストファイルのフルパスを入力して下さい。
@@ -29,7 +29,7 @@ for /f "tokens=1-9 skip=1" %%m in (%TARGET_LIST%) do (
     echo 映像に映っている最大人数: %%o
     echo 詳細ログ[yes/no/warn]: %%p
     echo 解析を終了するフレーム: %%q
-    echo Openpose解析結果JSONディレクトリパス: %%r
+    echo tf-pose-estimation解析結果JSONディレクトリパス: %%r
     echo 深度推定結果ディレクトリパス: %%s
     echo 反転指定リスト%%t
     echo 順番指定リスト: %%u

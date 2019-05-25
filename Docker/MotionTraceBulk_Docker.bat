@@ -5,10 +5,10 @@ rem ---
 cls
 
 rem docker image tag
-set IMAGE_TAG=1.02.01-1
+set IMAGE_TAG=1.02.01-2
 
-rem -- Openpose é¿çs
-call BulkOpenpose_Docker.bat
+rem -- tf-pose-estimation é¿çs
+call BulkTfpose_Docker.bat
 
 echo BULK OUTPUT_JSON_DIR: %OUTPUT_JSON_DIR%
 

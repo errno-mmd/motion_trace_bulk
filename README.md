@@ -6,32 +6,25 @@
 
 以下プログラムを順次実行し、vmd(MMDモーションデータ)ファイルを生成します。
 
- - [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
+ - [tf-pose-estimation](https://github.com/errno-mmd/tf-pose-estimation)
  - [miu200521358/FCRN-DepthPrediction-vmd](https://github.com/miu200521358/FCRN-DepthPrediction-vmd)
  - [miu200521358/3d-pose-baseline-vmd](https://github.com/miu200521358/3d-pose-baseline-vmd)
- - [miu200521358/3dpose_gan_vmd](https://github.com/miu200521358/3dpose_gan_vmd)
  - [miu200521358/VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi)
 
 
 ## 準備
 
-1. 下記プログラムがそれぞれ個別に動作することを確認します
+1. Docker for Windows をインストール
 
-     - [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
-     - [miu200521358/FCRN-DepthPrediction-vmd](https://github.com/miu200521358/FCRN-DepthPrediction-vmd)
-     - [miu200521358/3d-pose-baseline-vmd](https://github.com/miu200521358/3d-pose-baseline-vmd)
-     - [miu200521358/3dpose_gan_vmd](https://github.com/miu200521358/3dpose_gan_vmd)
-     - [miu200521358/VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi)
+※インストール後、Windows上のファイルにコンテナ内からアクセスできるよう、
+Docker for Windows の設定(Settings)でShared Drivesの設定を行う必要があります。
 
- - ※インストール手順等は各プログラムのREADMEおよびQiitaに記載してあります
-
-2. [MotionTraceBulk.bat](MotionTraceBulk.bat) の「各種ソースコードへのディレクトリパス(相対 or 絶対)」を環境に合わせて修正します
-    - [MotionTraceBulk_en.bat](MotionTraceBulk_en.bat) is in English. !! The logs remain in Japanese.
-    - 同じ階層にすべてのプログラムが配置されているのであれば、修正不要なはずです。
+※Shared Drivesの設定を行っても、ファイアウォールに遮断されてコンテナ内から
+　ファイルにアクセスできないことがあります。その場合ファイアウォールの設定を変更しましょう。
 
 ## 実行方法
 
-1. [MotionTraceBulk.bat](MotionTraceBulk.bat) を実行する
+1. [Docker/MotionTraceBulk_Docker.bat](Docker/MotionTraceBulk_Docker.bat) を実行する
 1. `解析対象映像ファイルパス` が聞かれるので、動画のファイルフルパスを入力する
 1. `映像に映っている最大人数` が聞かれるので、映像から読み取りたい最大人数を1始まりで指定する
     - 未指定の場合、デフォルトで1が設定される(１人分の解析)
@@ -42,7 +35,7 @@
     - 未指定 もしくは `no` の場合、通常ログ（各パラメータファイルと3D化アニメーションGIF）
     - `warn` の場合、3D化アニメーションGIFも生成しない（その分早い）
     - `yes`の場合、詳細ログを出力し、ログメッセージの他、デバッグ用画像も出力される（その分遅い）
-1. `反転フレームリスト`が聞かれるので、Openposeが裏表を誤認識しているフレーム範囲を指定する。
+1. `反転フレームリスト`が聞かれるので、tf-pose-estimationが裏表を誤認識しているフレーム範囲を指定する。
 	- ここで指定されたフレーム範囲内のみ、反転判定を行う。
 	- `10,20` のように、カンマで区切って複数フレーム指定可能。
 	- `10-15` のように、ハイフンで区切った場合、その範囲内のフレームが指定可能。
@@ -55,18 +48,17 @@
 1. 処理開始
     - 以下の順番で、各プログラムが順次実行されていく。最初のパラメータ入力以降は終了まで放置可能。
     
-    - [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
+    - [tf-pose-estimation](https://github.com/errno-mmd/tf-pose-estimation)
     - [miu200521358/FCRN-DepthPrediction-vmd](https://github.com/miu200521358/FCRN-DepthPrediction-vmd)
     - [miu200521358/3d-pose-baseline-vmd](https://github.com/miu200521358/3d-pose-baseline-vmd)
-    - [miu200521358/3dpose_gan_vmd](https://github.com/miu200521358/3dpose_gan_vmd)
     - [miu200521358/VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi)
      
 1. 処理がすべて終了すると、以下に結果が出力される。
-    - Openpose の結果
+    - tf-pose-estimation の結果
         - `解析対象映像ファイルパス/{解析対象映像ファイル名}_{実行日時}/{解析対象映像ファイル名}_json` ディレクトリ
             - → json形式のkeypointsデータ
         - `解析対象映像ファイルパス/{解析対象映像ファイル名}_{実行日時}/{解析対象映像ファイル名}_openpose.avi`
-            - → 元映像にOpenposeの解析結果を上乗せしたaviデータ
+            - → 元映像にtf-pose-estimationの解析結果を上乗せしたaviデータ
     - `解析対象映像ファイルパス/{解析対象映像ファイル名}_{実行日時}/{動画ファイル名}_json_{実行日時}_depth` ディレクトリ
 	- `{動画ファイル名}_json_{実行日時}_depth`
     	- FCRN-DepthPrediction-vmdの結果
@@ -86,12 +78,6 @@
             - smooth_plot.png … 移動量をなめらかにしたグラフ
             - frame3d/tmp_0000000000xx.png … 各フレームの3D姿勢
             - frame3d/tmp_0000000000xx_xxx.png … 各フレームの角度別3D姿勢(詳細ログyes時のみ)
-        - 3dpose_gan_vmdの結果
-            - pos_gan.txt … 全フレームの関節データ([VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi) に必要) 詳細：[Output](https://github.com/miu200521358/3d-pose-baseline-vmd/blob/master/doc/Output.md)
-            - smoothed_gan.txt … 全フレームの2D位置データ([VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi) に必要) 詳細：[Output](https://github.com/miu200521358/3d-pose-baseline-vmd/blob/master/doc/Output.md)
-            - movie_smoothing_gan.gif … フレームごとの姿勢を結合したアニメーションGIF
-            - frame3d_gan/gan_0000000000xx.png … 各フレームの3D姿勢
-            - frame3d_gan/gan_0000000000xx_xxx.png … 各フレームの角度別3D姿勢(詳細ログyes時のみ)
         - VMD-3d-pose-baseline-multiの結果
             - output_{日付}_{時間}_u{直立フレームIDX}_h{踵位置補正}_xy{センターXY移動倍率}_z{センターZ移動倍率}_s{円滑化度数}_p{移動キー間引き量}_r{回転キー間引き角度}_full/reduce.vmd
                 - キーフレームの間引きなしの場合、末尾は「full」。アリの場合、「reduce」。
@@ -104,8 +90,14 @@
     - `short02_000000000000_keypoints.json` のように、`{任意ファイル名}_{フレーム番号}_keypoints.json` というファイル名のうち、12桁の数字をフレーム番号として後ほど抽出するため
 
 ## ライセンス
-GNU GPLv3
 
-MMD自動トレースの結果を公開・配布する場合は、必ずライセンスのご確認と明記をお願い致します。Unity等、他のアプリケーションの場合も同様です。
+このバッチプログラム自体のライセンスは GNU GPLv3 です。
 
-[MMDモーショントレース自動化キットライセンス](https://ch.nicovideo.jp/miu200521358/blomaga/ar1686913)
+本バッチプログラムから呼び出される各ソフトウェアのライセンスをよく読んでからご利用ください。
+使用されている学習用データセットの制約により、商用利用ができないことに注意してください。
+
+- tf-pose-estimation (https://github.com/errno-mmd/tf-pose-estimation)
+- FCRN-DepthPrediction-vmd (https://github.com/miu200521358/FCRN-DepthPrediction-vmd)
+- 3d-pose-baseline-vmd (https://github.com/miu200521358/3d-pose-baseline-vmd)
+- VMD-3d-pose-baseline-multi (https://github.com/miu200521358/VMD-3d-pose-baseline-multi)
+

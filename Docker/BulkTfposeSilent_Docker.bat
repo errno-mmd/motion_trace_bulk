@@ -1,11 +1,11 @@
 @echo off
 rem --- 
-rem ---  映像データからOpenposeで姿勢推定する
+rem ---  映像データからtf-pose-estimationで姿勢推定する
 rem --- 
 
 
 echo ------------------------------------------
-echo Openpose 解析
+echo tf-pose-estimation 解析
 echo ------------------------------------------
 
 rem --echo NUMBER_PEOPLE_MAX: %NUMBER_PEOPLE_MAX%
@@ -36,7 +36,7 @@ set OUTPUT_VIDEO_PATH=%INPUT_VIDEO_DIR%%INPUT_VIDEO_FILENAME%_%DTTM%\%INPUT_VIDE
 echo 解析結果aviファイル：%OUTPUT_VIDEO_PATH%
 
 echo --------------
-echo Openpose解析を開始します。
+echo tf-pose-estimation解析を開始します。
 echo 解析を中断したい場合、ESCキーを押下して下さい。
 echo --------------
 
@@ -44,11 +44,11 @@ rem -- exe実行
 set C_INPUT_VIDEO=/data/%INPUT_VIDEO_FILENAME_EXT%
 set C_JSON_DIR=/data/%INPUT_VIDEO_FILENAME%_%DTTM%/%INPUT_VIDEO_FILENAME%_json
 set C_OUTPUT_VIDEO=/data/%INPUT_VIDEO_FILENAME%_%DTTM%/%INPUT_VIDEO_FILENAME%_openpose.avi
-set OPENPOSE_ARG=--video %C_INPUT_VIDEO% --model_pose COCO --write_json %C_JSON_DIR% --write_video %C_OUTPUT_VIDEO% --number_people_max %NUMBER_PEOPLE_MAX% --frame_first %FRAME_FIRST% --display 0
-docker container run --rm -v %INPUT_VIDEO_DIR:\=/%:/data -it errnommd/autotracevmd:%IMAGE_TAG% bash -c "cd /openpose && ./build/examples/openpose/openpose.bin %OPENPOSE_ARG%"
+set TFPOSE_ARG=--video %C_INPUT_VIDEO% --model mobilenet_v2_large --write_json %C_JSON_DIR% --write_video %C_OUTPUT_VIDEO% --number_people_max %NUMBER_PEOPLE_MAX% --frame_first %FRAME_FIRST% --no_display
+docker container run --rm -v %INPUT_VIDEO_DIR:\=/%:/data -it errnommd/autotracevmd:%IMAGE_TAG% bash -c "cd /tf-pose-estimation && python3 run_video.py %TFPOSE_ARG%"
 
 echo --------------
 echo Done!!
-echo Openpose解析終了
+echo tf-pose-estimation解析終了
 
 exit /b
