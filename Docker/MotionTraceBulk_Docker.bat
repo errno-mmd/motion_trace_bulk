@@ -5,7 +5,7 @@ rem ---
 cls
 
 rem docker image tag
-set IMAGE_TAG=1.02-1
+set IMAGE_TAG=1.02.01-1
 
 rem -- Openpose é¿çs
 call BulkOpenpose_Docker.bat
