@@ -51,4 +51,8 @@ echo --------------
 echo Done!!
 echo tf-pose-estimation‰ğÍI—¹
 
-exit /b
+if not %ERRORLEVEL% == 0 (
+    exit 1
+)
+
+exit /b 0

@@ -18,7 +18,7 @@ rem echo INPUT_VIDEO：%INPUT_VIDEO%
 
 IF /I "%INPUT_VIDEO%" EQU "" (
     ECHO 解析対象映像ファイルパスが設定されていないため、処理を中断します。
-    EXIT /B
+    EXIT 1
 )
 
 rem ---  解析を開始するフレーム
@@ -138,8 +138,12 @@ set C_OUTPUT_VIDEO=/data/%INPUT_VIDEO_FILENAME%_%DTTM%/%INPUT_VIDEO_FILENAME%_op
 set TFPOSE_ARG=--video %C_INPUT_VIDEO% --model mobilenet_v2_large --write_json %C_JSON_DIR% --write_video %C_OUTPUT_VIDEO% --number_people_max %NUMBER_PEOPLE_MAX% --frame_first %FRAME_FIRST% --no_display
 docker container run --rm -v %INPUT_VIDEO_DIR:\=/%:/data -it errnommd/autotracevmd:%IMAGE_TAG% bash -c "cd /tf-pose-estimation && python3 run_video.py %TFPOSE_ARG%"
 
+if not %ERRORLEVEL% == 0 (
+    exit 1
+)
+
 echo --------------
 echo Done!!
 echo tf-pose-estimation解析終了
 
-exit /b
+exit /b 0

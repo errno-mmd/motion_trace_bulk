@@ -25,4 +25,8 @@ set C_OUTPUT_SUB_DIR=/data/%PARENT_DIR_NAME%/%OUTPUT_JSON_DIR_NAME%_%DTTM%_idx%D
 set BL_ARG=--camera_frame --residual --batch_norm --dropout 0.5 --max_norm --evaluateActionWise --use_sh --epochs 200 --load 4874200 --gif_fps 30 --verbose %VERBOSE% --openpose %C_OUTPUT_SUB_DIR% --person_idx 1
 docker container run --rm -v %INPUT_VIDEO_DIR:\=/%:/data -it errnommd/autotracevmd:%IMAGE_TAG% bash -c "cd /3d-pose-baseline-vmd && python3 src/openpose_3dpose_sandbox_vmd.py %BL_ARG%"
 
-exit /b
+if not %ERRORLEVEL% == 0 (
+    exit 1
+)
+
+exit /b 0

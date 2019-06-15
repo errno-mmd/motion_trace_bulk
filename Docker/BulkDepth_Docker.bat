@@ -12,4 +12,8 @@ set FCRN_ARG=--model_path tensorflow/data/NYU_FCRN.ckpt --video_path %C_INPUT_VI
 
 docker container run --rm -v %INPUT_VIDEO_DIR:\=/%:/data -it errnommd/autotracevmd:%IMAGE_TAG% bash -c "cd /FCRN-DepthPrediction-vmd/ && python3 tensorflow/predict_video.py %FCRN_ARG%"
 
-exit /b
+if not %ERRORLEVEL% == 0 (
+    exit 1
+)
+
+exit /b 0
