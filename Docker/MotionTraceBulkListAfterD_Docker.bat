@@ -6,7 +6,7 @@ rem ---
 cls
 
 rem docker image tag
-set IMAGE_TAG=1.02.01-3
+set IMAGE_TAG=1.02.01-add_leg-1
 
 rem ---  入力対象パラメーターファイルパス
 echo 解析対象となるパラメーター設定リストファイルのフルパスを入力して下さい。

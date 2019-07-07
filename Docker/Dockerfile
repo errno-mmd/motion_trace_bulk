@@ -33,9 +33,9 @@ RUN mkdir /FCRN-DepthPrediction-vmd/tensorflow/data \
 
 # 3d-pose-baseline-multi
 RUN pip3 install h5py
-RUN curl -L https://github.com/miu200521358/3d-pose-baseline-vmd/archive/master.tar.gz \
+RUN curl -L https://github.com/errno-mmd/3d-pose-baseline-vmd/archive/add_leg.tar.gz \
  | tar -zxv \
- && mv 3d-pose-baseline-vmd-master 3d-pose-baseline-vmd
+ && mv 3d-pose-baseline-vmd-add_leg 3d-pose-baseline-vmd
 RUN mkdir /3d-pose-baseline-vmd/data \
  && curl -L -O https://www.dropbox.com/s/e35qv3n6zlkouki/h36m.zip \
  && unzip -d /3d-pose-baseline-vmd/data h36m.zip \

@@ -5,7 +5,7 @@ rem ---
 cls
 
 rem docker image tag
-set IMAGE_TAG=1.02.01-3
+set IMAGE_TAG=1.02.01-add_leg-1
 
 rem -- tf-pose-estimation é¿çs
 call BulkTfpose_Docker.bat
