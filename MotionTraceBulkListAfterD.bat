@@ -4,14 +4,13 @@ rem ---  映像データから各種トレースデータを揃えてvmdを生成する
 rem ---  複数映像対応バージョン
 rem --- 
 cls
+call activate autotracevmd
 
 rem -----------------------------------
 rem 各種ソースコードへのディレクトリパス(相対 or 絶対)
 rem -----------------------------------
-rem --- Openpose
-set OPENPOSE_DIR=..\openpose-1.4.0-win64-gpu-binaries
-rem --- OpenposeDemo.exeのあるディレクトリパス(PortableDemo版: bin, 自前ビルド版: Release)
-set OPENPOSE_BIN_DIR=bin
+rem --- tf-pose-estimation
+set TFPOSE_DIR=..\tf-pose-estimation
 rem --- 3d-pose-baseline-vmd
 set BASELINE_DIR=..\3d-pose-baseline-vmd
 rem -- 3dpose_gan_vmd
@@ -44,7 +43,7 @@ for /f "tokens=1-9 skip=1" %%m in (%TARGET_LIST%) do (
     echo 映像に映っている最大人数: %%o
     echo 詳細ログ[yes/no/warn]: %%p
     echo 解析を終了するフレーム: %%q
-    echo Openpose解析結果JSONディレクトリパス: %%r
+    echo tf-pose-estimation解析結果JSONディレクトリパス: %%r
     echo 深度推定結果ディレクトリパス: %%s
     echo 反転指定リスト%%t
     echo 順番指定リスト: %%u
