@@ -3,14 +3,13 @@ rem ---
 rem ---  Generate vmd by aligning various trace data from video data
 rem --- 
 cls
+call activate autotracevmd
 
 rem -----------------------------------
 rem Directory path to various source code (relative or absolute)
 rem -----------------------------------
-rem --- Openpose
-set OPENPOSE_DIR=..\openpose-1.5.1-binaries-win64-gpu-python-flir-3d_recommended\openpose
-rem --- Directory path with OpenposeDemo.exe(PortableDemo: bin, self-buidl: Release)
-set OPENPOSE_BIN_DIR=bin
+rem --- tf-pose-estimation
+set TFPOSE_DIR=..\tf-pose-estimation
 rem --- 3d-pose-baseline-vmd
 set BASELINE_DIR=..\3d-pose-baseline-vmd
 rem -- 3dpose_gan_vmd
@@ -20,9 +19,9 @@ set DEPTH_DIR=..\mannequinchallenge-vmd
 rem -- VMD-3d-pose-baseline-multi
 set VMD_DIR=..\VMD-3d-pose-baseline-multi
 
-rem -- Openpose execute
+rem -- tf-pose-estimation execute
 cd /d %~dp0
-call BulkOpenpose_en.bat
+call BulkTfpose_en.bat
 
 echo BULK OUTPUT_JSON_DIR: %OUTPUT_JSON_DIR%
 

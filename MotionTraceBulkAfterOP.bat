@@ -1,17 +1,16 @@
 @echo off
 rem --- 
 rem ---  映像データから各種トレースデータを揃えてvmdを生成する
-rem --- Openpose が取得できている場合(FCRN以降実施)
+rem --- tf-pose-estimation が取得できている場合(FCRN以降実施)
 rem --- 
 cls
+call activate autotracevmd
 
 rem -----------------------------------
 rem 各種ソースコードへのディレクトリパス(相対 or 絶対)
 rem -----------------------------------
-rem --- Openpose
-set OPENPOSE_DIR=..\openpose-1.5.1-binaries-win64-gpu-python-flir-3d_recommended\openpose
-rem --- OpenposeDemo.exeのあるディレクトリパス(PortableDemo版: bin, 自前ビルド版: Release)
-set OPENPOSE_BIN_DIR=bin
+rem --- tf-pose-estimation
+set TFPOSE_DIR=..\tf-pose-estimation
 rem --- 3d-pose-baseline-vmd
 set BASELINE_DIR=..\3d-pose-baseline-vmd
 rem -- 3dpose_gan_vmd
@@ -22,9 +21,9 @@ rem -- VMD-3d-pose-baseline-multi
 set VMD_DIR=..\VMD-3d-pose-baseline-multi
 
 
-rem -- Openpose 後処理実行
+rem -- tf-pose-estimation 後処理実行
 cd /d %~dp0
-call BulkOpenposeAfter.bat
+call BulkTfposeAfter.bat
 
 echo BULK OUTPUT_JSON_DIR: %OUTPUT_JSON_DIR%
 
