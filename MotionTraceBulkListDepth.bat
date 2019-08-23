@@ -4,7 +4,7 @@ rem ---  映像データから各種トレースデータを揃えてvmdを生成する
 rem ---  複数映像対応バージョン
 rem --- 
 cls
-call activate autotracevmd
+call activate mmdmat
 
 rem -----------------------------------
 rem 各種ソースコードへのディレクトリパス(相対 or 絶対)

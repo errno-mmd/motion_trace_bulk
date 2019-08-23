@@ -4,7 +4,7 @@ rem ---  映像データから各種トレースデータを揃えてvmdを生成する
 rem --- tf-pose-estimation が取得できている場合(FCRN以降実施)
 rem --- 
 cls
-call activate autotracevmd
+call activate mmdmat
 
 rem -----------------------------------
 rem 各種ソースコードへのディレクトリパス(相対 or 絶対)
