@@ -15,7 +15,7 @@ rem ---  python 実行
 python applications\pos2vmd_multi.py -v %VERBOSE% -t "%OUTPUT_SUB_DIR%" -b "born\あにまさ式ミクボーン.csv" -c 30 -z 0 -s 1 -p 0.5 -r 3 -k 1 -e 0
 
 if not %ERRORLEVEL% == 0 (
-    exit 1
+    exit /b 1
 )
 
 cd /d %~dp0
