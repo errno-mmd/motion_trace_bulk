@@ -6,21 +6,21 @@
 
 以下プログラムを順次実行し、vmd(MMDモーションデータ)ファイルを生成します。
 
- - [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
+ - [tf-pose-estimation](https://github.com/errno-mmd/tf-pose-estimation)
  - [miu200521358/FCRN-DepthPrediction-vmd](https://github.com/miu200521358/FCRN-DepthPrediction-vmd)
  - [miu200521358/3d-pose-baseline-vmd](https://github.com/miu200521358/3d-pose-baseline-vmd)
- - [miu200521358/3dpose_gan_vmd](https://github.com/miu200521358/3dpose_gan_vmd)
  - [miu200521358/VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi)
 
 
 ## 準備
 
+0. [mmdmatic](https://github.com/errno-mmd/mmdmatic)でインストールした場合、下記の準備手順は不要です。
+
 1. 下記プログラムがそれぞれ個別に動作することを確認します
 
-     - [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
+     - [tf-pose-estimation](https://github.com/errno-mmd/tf-pose-estimation)
      - [miu200521358/FCRN-DepthPrediction-vmd](https://github.com/miu200521358/FCRN-DepthPrediction-vmd)
      - [miu200521358/3d-pose-baseline-vmd](https://github.com/miu200521358/3d-pose-baseline-vmd)
-     - [miu200521358/3dpose_gan_vmd](https://github.com/miu200521358/3dpose_gan_vmd)
      - [miu200521358/VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi)
 
  - ※インストール手順等は各プログラムのREADMEおよびQiitaに記載してあります
@@ -55,18 +55,17 @@
 1. 処理開始
     - 以下の順番で、各プログラムが順次実行されていく。最初のパラメータ入力以降は終了まで放置可能。
     
-    - [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
+    - [tf-pose-estimation](https://github.com/errno-mmd/tf-pose-estimation)
     - [miu200521358/FCRN-DepthPrediction-vmd](https://github.com/miu200521358/FCRN-DepthPrediction-vmd)
     - [miu200521358/3d-pose-baseline-vmd](https://github.com/miu200521358/3d-pose-baseline-vmd)
-    - [miu200521358/3dpose_gan_vmd](https://github.com/miu200521358/3dpose_gan_vmd)
     - [miu200521358/VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi)
      
 1. 処理がすべて終了すると、以下に結果が出力される。
-    - Openpose の結果
+    - tf-pose-estimation の結果
         - `解析対象映像ファイルパス/{解析対象映像ファイル名}_{実行日時}/{解析対象映像ファイル名}_json` ディレクトリ
             - → json形式のkeypointsデータ
         - `解析対象映像ファイルパス/{解析対象映像ファイル名}_{実行日時}/{解析対象映像ファイル名}_openpose.avi`
-            - → 元映像にOpenposeの解析結果を上乗せしたaviデータ
+            - → 元映像にtf-pose-estimationの解析結果を上乗せしたaviデータ
     - `解析対象映像ファイルパス/{解析対象映像ファイル名}_{実行日時}/{動画ファイル名}_json_{実行日時}_depth` ディレクトリ
 	- `{動画ファイル名}_json_{実行日時}_depth`
     	- FCRN-DepthPrediction-vmdの結果
@@ -86,14 +85,8 @@
             - smooth_plot.png … 移動量をなめらかにしたグラフ
             - frame3d/tmp_0000000000xx.png … 各フレームの3D姿勢
             - frame3d/tmp_0000000000xx_xxx.png … 各フレームの角度別3D姿勢(詳細ログyes時のみ)
-        - 3dpose_gan_vmdの結果
-            - pos_gan.txt … 全フレームの関節データ([VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi) に必要) 詳細：[Output](https://github.com/miu200521358/3d-pose-baseline-vmd/blob/master/doc/Output.md)
-            - smoothed_gan.txt … 全フレームの2D位置データ([VMD-3d-pose-baseline-multi](https://github.com/miu200521358/VMD-3d-pose-baseline-multi) に必要) 詳細：[Output](https://github.com/miu200521358/3d-pose-baseline-vmd/blob/master/doc/Output.md)
-            - movie_smoothing_gan.gif … フレームごとの姿勢を結合したアニメーションGIF
-            - frame3d_gan/gan_0000000000xx.png … 各フレームの3D姿勢
-            - frame3d_gan/gan_0000000000xx_xxx.png … 各フレームの角度別3D姿勢(詳細ログyes時のみ)
         - VMD-3d-pose-baseline-multiの結果
-            - output_{日付}_{時間}_u{直立フレームIDX}_h{踵位置補正}_xy{センターXY移動倍率}_z{センターZ移動倍率}_s{円滑化度数}_p{移動キー間引き量}_r{回転キー間引き角度}_full/reduce.vmd
+            - {ボーン構造CSVファイル名}_{日付}_{時間}_u{直立フレームIDX}_h{踵位置補正}_xy{センターXY移動倍率}_z{センターZ移動倍率}_s{円滑化度数}_p{移動キー間引き量}_r{回転キー間引き角度}_full/reduce.vmd
                 - キーフレームの間引きなしの場合、末尾は「full」。アリの場合、「reduce」。
                 - モデルはあにまさ式ミクを基準に、すべてデフォルトパラメーターでモーションデータを生成します
             - upright.txt … 直立フレームのキー情報
@@ -106,6 +99,8 @@
 ## ライセンス
 GNU GPLv3
 
-MMD自動トレースの結果を公開・配布する場合は、必ずライセンスのご確認と明記をお願い致します。Unity等、他のアプリケーションの場合も同様です。
+MMD自動トレースの結果を公開・配布する場合は、必ずライセンスのご確認をお願い致します。ライセンスを記載いただけたらとても有難いです。Unityの場合も同様です。
 
 [MMDモーショントレース自動化キットライセンス](https://ch.nicovideo.jp/miu200521358/blomaga/ar1686913)
+
+このプログラムはmiu(miu200521358)さんが作成されたバッチファイルをerrno-mmdが改造したものです。
