@@ -45,6 +45,9 @@ cd /d %TFPOSE_DIR%\
 rem -- exeé¿çs
 python run_video.py --video %INPUT_VIDEO%  --model mobilenet_v2_large --write_json %OUTPUT_JSON_DIR% --write_video %OUTPUT_VIDEO_PATH% --number_people_max %NUMBER_PEOPLE_MAX% --frame_first %FRAME_FIRST% --no_display
 
+if not %ERRORLEVEL% == 0 (
+    exit 1
+)
 
 echo --------------
 echo Done!!
@@ -52,4 +55,4 @@ echo tf-pose-estimationâêÕèIóπ
 
 cd /d %~dp0
 
-exit /b
+exit /b 0

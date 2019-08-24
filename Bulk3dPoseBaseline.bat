@@ -27,6 +27,10 @@ cd /d %BASELINE_DIR%
 rem ---  python é¿çs
 python src/openpose_3dpose_sandbox_vmd.py --camera_frame --residual --batch_norm --dropout 0.5 --max_norm --evaluateActionWise --use_sh --epochs 200 --load 4874200 --gif_fps 30 --verbose %VERBOSE% --openpose %OUTPUT_SUB_DIR% --person_idx 1
 
+if not %ERRORLEVEL% == 0 (
+    exit 1
+)
+
 cd /d %~dp0
 
-exit /b
+exit /b 0

@@ -14,6 +14,10 @@ cd /d %VMD_DIR%
 rem ---  python é¿çs
 python applications\pos2vmd_multi.py -v %VERBOSE% -t "%OUTPUT_SUB_DIR%" -b "born\animasa_miku_born.csv" -c 30 -z 0 -s 1 -p 0.5 -r 3 -k 1 -e 0
 
+if not %ERRORLEVEL% == 0 (
+    exit 1
+)
+
 cd /d %~dp0
 
-exit /b
+exit /b 0
