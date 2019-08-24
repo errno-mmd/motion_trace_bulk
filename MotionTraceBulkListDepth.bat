@@ -5,6 +5,9 @@ rem ---  複数映像対応バージョン
 rem --- 
 cls
 call activate mmdmat
+if not %ERRORLEVEL% == 0 (
+    exit /b 1
+)
 
 rem -----------------------------------
 rem 各種ソースコードへのディレクトリパス(相対 or 絶対)
@@ -38,7 +41,7 @@ rem echo INPUT_VIDEO：%INPUT_VIDEO%
 
 IF /I "%TARGET_LIST%" EQU "" (
     ECHO 解析対象リストファイルパスが設定されていないため、処理を中断します。
-    EXIT /B
+    EXIT /B 1
 )
 
 SETLOCAL enabledelayedexpansion
@@ -96,6 +99,9 @@ for /f "tokens=1-8 skip=1" %%m in (%TARGET_LIST%) do (
     
     rem -- mannequinchallenge-vmd実行
     call BulkDepth.bat
+    if not !ERRORLEVEL% == 0 (
+        exit /b 1
+    )
 
     echo ------------------------------------------
     echo トレース結果

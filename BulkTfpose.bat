@@ -18,7 +18,7 @@ rem echo INPUT_VIDEO：%INPUT_VIDEO%
 
 IF /I "%INPUT_VIDEO%" EQU "" (
     ECHO 解析対象映像ファイルパスが設定されていないため、処理を中断します。
-    EXIT /B
+    EXIT /B 1
 )
 
 rem ---  解析を開始するフレーム
@@ -137,7 +137,7 @@ rem -- exe実行
 python run_video.py --video %INPUT_VIDEO%  --model mobilenet_v2_large --write_json %OUTPUT_JSON_DIR% --write_video %OUTPUT_VIDEO_PATH% --number_people_max %NUMBER_PEOPLE_MAX% --frame_first %FRAME_FIRST% --no_display
 
 if not %ERRORLEVEL% == 0 (
-    exit 1
+    exit /b 1
 )
 
 echo --------------

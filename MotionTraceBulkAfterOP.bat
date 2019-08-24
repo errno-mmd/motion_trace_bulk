@@ -5,6 +5,9 @@ rem --- tf-pose-estimation が取得できている場合(FCRN以降実施)
 rem --- 
 cls
 call activate mmdmat
+if not %ERRORLEVEL% == 0 (
+    exit /b 1
+)
 
 rem -----------------------------------
 rem 各種ソースコードへのディレクトリパス(相対 or 絶対)
@@ -24,6 +27,9 @@ set VMD_DIR=..\VMD-3d-pose-baseline-multi
 rem -- tf-pose-estimation 後処理実行
 cd /d %~dp0
 call BulkTfposeAfter.bat
+if not %ERRORLEVEL% == 0 (
+    exit /b 1
+)
 
 echo BULK OUTPUT_JSON_DIR: %OUTPUT_JSON_DIR%
 
@@ -49,6 +55,9 @@ set PAST_DEPTH_PATH=
 
 rem -- mannequinchallenge-vmd実行
 call BulkDepth.bat
+if not %ERRORLEVEL% == 0 (
+    exit /b 1
+)
 
 rem -- キャプチャ人数分ループを回す
 for /L %%i in (1,1,%NUMBER_PEOPLE_MAX%) do (
@@ -56,12 +65,18 @@ for /L %%i in (1,1,%NUMBER_PEOPLE_MAX%) do (
     
     rem -- 3d-pose-baseline実行
     call Bulk3dPoseBaseline.bat
-    
+    if not %ERRORLEVEL% == 0 (
+        exit /b 1
+    )
+
     rem -- 3dpose_gan実行
     rem call Bulk3dPoseGan.bat
 
     rem -- VMD-3d-pose-baseline-multi 実行
     call BulkVmd.bat
+    if not %ERRORLEVEL% == 0 (
+        exit /b 1
+    )
 )
 
 echo ------------------------------------------

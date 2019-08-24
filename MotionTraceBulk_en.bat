@@ -4,6 +4,9 @@ rem ---  Generate vmd by aligning various trace data from video data
 rem --- 
 cls
 call activate mmdmat
+if not %ERRORLEVEL% == 0 (
+    exit /b 1
+)
 
 rem -----------------------------------
 rem Directory path to various source code (relative or absolute)
@@ -22,6 +25,9 @@ set VMD_DIR=..\VMD-3d-pose-baseline-multi
 rem -- tf-pose-estimation execute
 cd /d %~dp0
 call BulkTfpose_en.bat
+if not %ERRORLEVEL% == 0 (
+    exit /b 1
+)
 
 echo BULK OUTPUT_JSON_DIR: %OUTPUT_JSON_DIR%
 
@@ -45,6 +51,9 @@ set DTTM=%dt:~0,4%%dt:~5,2%%dt:~8,2%_%TM2:~0,2%%TM2:~3,2%%TM2:~6,2%
 
 rem -- run mannequinchallenge-vmd
 call BulkDepth.bat
+if not %ERRORLEVEL% == 0 (
+    exit /b 1
+)
 
 rem -- Turn the loop for the number of capture people
 for /L %%i in (1,1,%NUMBER_PEOPLE_MAX%) do (
@@ -52,12 +61,18 @@ for /L %%i in (1,1,%NUMBER_PEOPLE_MAX%) do (
     
     rem -- run 3d-pose-baseline
     call Bulk3dPoseBaseline.bat
-    
+    if not %ERRORLEVEL% == 0 (
+        exit /b 1
+    )
+
     rem -- run 3dpose_gan
     rem call Bulk3dPoseGan.bat
 
     rem -- run VMD-3d-pose-baseline-multi
     call BulkVmd_en.bat
+    if not %ERRORLEVEL% == 0 (
+        exit /b 1
+    )
 )
 
 echo ------------------------------------------

@@ -18,7 +18,7 @@ rem echo INPUT_VIDEO：%INPUT_VIDEO%
 
 IF /I "%INPUT_VIDEO%" EQU "" (
     ECHO 解析対象映像ファイルパスが設定されていないため、処理を中断します。
-    EXIT /B
+    EXIT /B 1
 )
 
 rem ---  解析結果JSONディレクトリパス
@@ -31,7 +31,7 @@ rem echo OUTPUT_JSON_DIR：%OUTPUT_JSON_DIR%
 
 IF /I "%OUTPUT_JSON_DIR%" EQU "" (
     ECHO 解析結果JSONディレクトリパスが設定されていないため、処理を中断します。
-    EXIT /B
+    EXIT /B 1
 )
 
 rem ---  映像に映っている最大人数
