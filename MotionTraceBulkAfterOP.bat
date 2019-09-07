@@ -6,7 +6,7 @@ rem ---
 cls
 call activate mmdmat
 if not %ERRORLEVEL% == 0 (
-    exit /b 1
+    goto die
 )
 
 rem -----------------------------------
@@ -28,7 +28,7 @@ rem -- tf-pose-estimation 後処理実行
 cd /d %~dp0
 call BulkTfposeAfter.bat
 if not %ERRORLEVEL% == 0 (
-    exit /b 1
+    goto die
 )
 
 echo BULK OUTPUT_JSON_DIR: %OUTPUT_JSON_DIR%
@@ -54,7 +54,7 @@ set DTTM=%dt:~0,4%%dt:~5,2%%dt:~8,2%_%TM2:~0,2%%TM2:~3,2%%TM2:~6,2%
 rem -- FCRN-DepthPrediction-vmd実行
 call BulkDepth.bat
 if not %ERRORLEVEL% == 0 (
-    exit /b 1
+    goto die
 )
 
 rem -- キャプチャ人数分ループを回す
@@ -64,7 +64,7 @@ for /L %%i in (1,1,%NUMBER_PEOPLE_MAX%) do (
     rem -- 3d-pose-baseline実行
     call Bulk3dPoseBaseline.bat
     if not %ERRORLEVEL% == 0 (
-        exit /b 1
+        goto die
     )
 
     rem -- 3dpose_gan実行
@@ -73,7 +73,7 @@ for /L %%i in (1,1,%NUMBER_PEOPLE_MAX%) do (
     rem -- VMD-3d-pose-baseline-multi 実行
     call BulkVmd.bat
     if not %ERRORLEVEL% == 0 (
-        exit /b 1
+        goto die
     )
 )
 
@@ -86,3 +86,9 @@ echo ------------------------------------------
 
 rem -- カレントディレクトリに戻る
 cd /d %~dp0
+exit /b 0
+
+:die
+@echo ERROR
+@pause -1
+exit /b 1

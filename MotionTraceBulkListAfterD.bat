@@ -6,7 +6,7 @@ rem ---
 cls
 call activate mmdmat
 if not %ERRORLEVEL% == 0 (
-    exit /b 1
+    goto die
 )
 
 rem -----------------------------------
@@ -34,7 +34,7 @@ rem echo INPUT_VIDEO：%INPUT_VIDEO%
 
 IF /I "%TARGET_LIST%" EQU "" (
     ECHO 解析対象リストファイルパスが設定されていないため、処理を中断します。
-    EXIT /B 1
+    goto die
 )
 
 SETLOCAL enabledelayedexpansion
@@ -95,7 +95,7 @@ for /f "tokens=1-9 skip=1" %%m in (%TARGET_LIST%) do (
     rem -- FCRN-DepthPrediction-vmd実行
     call BulkDepth.bat
     if not !ERRORLEVEL% == 0 (
-        exit /b 1
+        goto die
     )
 
     rem -- キャプチャ人数分ループを回す
@@ -105,7 +105,7 @@ for /f "tokens=1-9 skip=1" %%m in (%TARGET_LIST%) do (
         rem -- 3d-pose-baseline実行
         call Bulk3dPoseBaseline.bat
         if not !ERRORLEVEL% == 0 (
-            exit /b 1
+            goto die
         )
         
         rem -- 3dpose_gan実行
@@ -114,7 +114,7 @@ for /f "tokens=1-9 skip=1" %%m in (%TARGET_LIST%) do (
         rem -- VMD-3d-pose-baseline-multi 実行
         call BulkVmd.bat
         if not !ERRORLEVEL% == 0 (
-            exit /b 1
+            goto die
         )
     )
 
@@ -135,3 +135,9 @@ ENDLOCAL
 
 rem -- カレントディレクトリに戻る
 cd /d %~dp0
+exit /b 0
+
+:die
+@echo ERROR
+@pause -1
+exit /b 1
