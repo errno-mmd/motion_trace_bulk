@@ -43,6 +43,7 @@ rem ---  tf-pose-estimationディレクトリで実行
 cd /d %TFPOSE_DIR%\
 
 rem -- exe実行
+set TF_FORCE_GPU_ALLOW_GROWTH=true
 python run_video.py --video %INPUT_VIDEO%  --model mobilenet_v2_large --write_json %OUTPUT_JSON_DIR% --write_video %OUTPUT_VIDEO_PATH% --number_people_max %NUMBER_PEOPLE_MAX% --frame_first %FRAME_FIRST% --no_display
 if not %ERRORLEVEL% == 0 (
     exit /b 1
