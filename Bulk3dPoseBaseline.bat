@@ -26,7 +26,7 @@ cd /d %BASELINE_DIR%
 
 rem ---  python é¿çs
 set TF_FORCE_GPU_ALLOW_GROWTH=true
-python src/openpose_3dpose_sandbox_vmd.py --camera_frame --residual --batch_norm --dropout 0.5 --max_norm --evaluateActionWise --use_sh --epochs 200 --load 4874200 --gif_fps 30 --verbose %VERBOSE% --openpose %OUTPUT_SUB_DIR% --person_idx 1
+python src/openpose_3dpose_sandbox_vmd.py --camera_frame --residual --batch_norm --dropout 0.5 --max_norm --evaluateActionWise --use_sh --epochs 200 --load 4874200 --gif_fps 30 --verbose %VERBOSE% --openpose %OUTPUT_SUB_DIR% --person_idx 1 --add_leg
 
 if not %ERRORLEVEL% == 0 (
     exit /b 1
