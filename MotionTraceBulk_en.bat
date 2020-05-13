@@ -40,14 +40,9 @@ FOR %%1 IN (%OUTPUT_JSON_DIR%) DO (
     set OUTPUT_JSON_DIR_NAME=%%~n1
 )
 
-rem -- Execution date
-set DT=%date%
-rem -- Execution time
-set TM=%time%
-rem -- Replace time space with 0
-set TM2=%TM: =0%
-rem -- Replace execution date and time for file name
-set DTTM=%dt:~0,4%%dt:~5,2%%dt:~8,2%_%TM2:~0,2%%TM2:~3,2%%TM2:~6,2%
+rem -- Execution date and time
+for /f "usebackq" %%i in (`python -c "import datetime; print(datetime.datetime.now().strftime('%%Y%%m%%d_%%H%%M%%S'))"`) do set DTTM=%%i
+
 
 rem -- run mannequinchallenge-vmd
 call BulkDepth.bat

@@ -97,14 +97,8 @@ rem --echo NUMBER_PEOPLE_MAX: %NUMBER_PEOPLE_MAX%
 
 rem -----------------------------------
 
-rem -- 実行日付
-set DT=%date%
-rem -- 実行時間
-set TM=%time%
-rem -- 時間の空白を0に置換
-set TM2=%TM: =0%
-rem -- 実行日時をファイル名用に置換
-set DTTM=%dt:~0,4%%dt:~5,2%%dt:~8,2%_%TM2:~0,2%%TM2:~3,2%%TM2:~6,2%
+rem -- 実行日時
+for /f "usebackq" %%i in (`python -c "import datetime; print(datetime.datetime.now().strftime('%%Y%%m%%d_%%H%%M%%S'))"`) do set DTTM=%%i
 
 echo --------------
 

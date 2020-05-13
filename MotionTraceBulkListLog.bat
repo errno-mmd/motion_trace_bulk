@@ -65,14 +65,9 @@ for /f "tokens=1-7 skip=1" %%m in (%TARGET_LIST%) do (
         set VERBOSE=1
     )
 
-    rem -- 実行日付
-    set DT=!date!
-    rem -- 実行時間
-    set TM=!time!
-    rem -- 時間の空白を0に置換
-    set TM2=!time: =0!
-    rem -- 実行日時をファイル名用に置換
-    set DTTM=!DT:~0,4!!DT:~5,2!!DT:~8,2!_!TM2:~0,2!!TM2:~3,2!!TM2:~6,2!
+    rem -- 実行日時
+    call :get_datetime
+    set DTTM=!datetime!
     
     echo now: !DTTM!
     
@@ -129,3 +124,7 @@ ENDLOCAL
 
 rem -- カレントディレクトリに戻る
 cd /d %~dp0
+
+:get_datetime
+for /f "usebackq" %%i in (`python -c "import datetime; print(datetime.datetime.now().strftime('%%Y%%m%%d_%%H%%M%%S'))"`) do set datetime=%%i
+exit /b
